@@ -47,6 +47,9 @@ dev = ["ruff==0.16.1", "pytest>=8.0", "pytest-cov>=5.0"]
 where = ["."]
 include = ["kb*"]
 
+[tool.setuptools.package-data]
+kb = ["schema.sql"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py310"

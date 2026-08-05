@@ -33,9 +33,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/hrithikchauhan/kb-cli"
-Repository = "https://github.com/hrithikchauhan/kb-cli"
-Issues = "https://github.com/hrithikchauhan/kb-cli/issues"
+Homepage = "https://github.com/Hrithik5/kb-cli"
+Repository = "https://github.com/Hrithik5/kb-cli"
+Issues = "https://github.com/Hrithik5/kb-cli/issues"
 
 [project.scripts]
 kb = "kb.main:main"

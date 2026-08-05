@@ -18,6 +18,9 @@ from kb.commands.init_cmd import InitCommand
 from kb.commands.list_cmd import ListCommand
 from kb.commands.recent_cmd import RecentCommand
 from kb.commands.stats_cmd import StatsCommand
+from kb.commands.info_cmd import InfoCommand
+from kb.commands.config_cmd import ConfigCommand
+from kb.commands.clean_cmd import CleanCommand
 from kb.config import Config
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository
@@ -40,6 +43,9 @@ COMMAND_CLASSES: list[type[BaseCommand]] = [
     FzfCommand,
     GetCommand,
     CompletionCommand,
+    InfoCommand,
+    ConfigCommand,
+    CleanCommand,
 ]
 
 

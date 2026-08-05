@@ -9,8 +9,9 @@ def copy_to_clipboard(text: str) -> bool:
             process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
             process.communicate(text.encode("utf-8"))
             return process.returncode == 0
-        elif sys.platform.startswith("linux"):
-            # Try wl-copy first, then xclip
+
+        if sys.platform.startswith("linux"):
+            # Try Wayland first
             try:
                 process = subprocess.Popen(["wl-copy"], stdin=subprocess.PIPE)
                 process.communicate(text.encode("utf-8"))
@@ -19,13 +20,20 @@ def copy_to_clipboard(text: str) -> bool:
             except FileNotFoundError:
                 pass
 
-            process = subprocess.Popen(["xclip", "-selection", "clipboard"], stdin=subprocess.PIPE)
+            # Fallback to X11
+            process = subprocess.Popen(
+                ["xclip", "-selection", "clipboard"],
+                stdin=subprocess.PIPE,
+            )
             process.communicate(text.encode("utf-8"))
             return process.returncode == 0
-        elif sys.platform == "win32":
+
+        if sys.platform == "win32":
             process = subprocess.Popen(["clip"], stdin=subprocess.PIPE)
             process.communicate(text.encode("utf-8"))
             return process.returncode == 0
-    except Exception:
-        pass
+
+    except (FileNotFoundError, OSError):
+        return False
+
     return False

@@ -3,15 +3,15 @@ import sys
 from kb.cli import run_cli
 
 
-def main():
+def main() -> None:
     try:
         sys.exit(run_cli())
     except KeyboardInterrupt:
         print("\nOperation cancelled.")
-        sys.exit(130)
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        raise SystemExit(130)
+    except Exception as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        raise SystemExit(1) from exc
 
 
 if __name__ == "__main__":

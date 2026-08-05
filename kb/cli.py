@@ -1,4 +1,5 @@
 import argparse
+import sqlite3
 
 from kb import __version__
 from kb.commands.add_cmd import AddCommand
@@ -44,9 +45,11 @@ COMMAND_CLASSES: list[type[BaseCommand]] = [
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="kb",
-        description="kb — Developer Knowledge Engine CLI powered by SQLite FTS5."
+        description="kb — Developer Knowledge Engine CLI powered by SQLite FTS5.",
     )
-    parser.add_argument("-v", "--version", action="version", version=f"kb version {__version__}")
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"kb version {__version__}"
+    )
     parser.add_argument("--config-file", help="Custom path to config file")
 
     subparsers = parser.add_subparsers(dest="command", help="Available kb subcommands")
@@ -58,30 +61,36 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def run_cli(args_list: list[str] = None) -> int:
+def run_cli(args_list: list[str] | None = None) -> int:
     parser = build_parser()
+
     try:
         args = parser.parse_args(args_list)
-    except SystemExit as e:
-        return e.code
+    except SystemExit as exc:
+        return exc.code
 
     if not args.command:
         parser.print_help()
         return 0
 
-    cfg = Config.load(config_path=args.config_file if hasattr(args, "config_file") and args.config_file else None)
+    cfg = Config.load(
+        config_path=args.config_file
+        if hasattr(args, "config_file") and args.config_file
+        else None
+    )
+
     db = Database(cfg.database_path)
 
-    # Ensure schema initialized automatically
+    # Ensure schema is initialized automatically.
     try:
         db.init_schema()
-    except Exception:
+    except sqlite3.Error:
+        # The init command will report database initialization failures.
         pass
 
     repo = KnowledgeRepository(db)
     service = KnowledgeService(repo)
 
-    # Instantiate command matching args.command
     for cmd_cls in COMMAND_CLASSES:
         if cmd_cls.name == args.command:
             cmd = cmd_cls(service, cfg)

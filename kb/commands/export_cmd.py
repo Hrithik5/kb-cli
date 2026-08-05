@@ -12,7 +12,11 @@ class ExportCommand(BaseCommand):
 
     @classmethod
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
-        parser.add_argument("format", choices=["json", "markdown", "backup"], help="Export output format")
+        parser.add_argument(
+            "format",
+            choices=["json", "markdown", "backup"],
+            help="Export output format",
+        )
         parser.add_argument("output", help="Target output file path")
         parser.add_argument("-c", "--category", help="Filter export by category")
 
@@ -22,15 +26,48 @@ class ExportCommand(BaseCommand):
 
         try:
             if args.format == "json":
-                count = import_service.export_json(output_path, category=args.category)
-                print(Formatter.color(f"✔ Exported {count} items to {output_path} (JSON)", Formatter.GREEN))
+                count = import_service.export_json(
+                    output_path,
+                    category=args.category,
+                )
+                print(
+                    Formatter.color(
+                        f"✔ Exported {count} items to {output_path} (JSON)",
+                        Formatter.GREEN,
+                    )
+                )
+
             elif args.format == "markdown":
-                count = import_service.export_markdown(output_path, category=args.category)
-                print(Formatter.color(f"✔ Exported {count} items to {output_path} (Markdown)", Formatter.GREEN))
-            elif args.format == "backup":
-                import_service.backup_database(self.config.database_path, output_path)
-                print(Formatter.color(f"✔ Backed up database to {output_path}", Formatter.GREEN))
+                count = import_service.export_markdown(
+                    output_path,
+                    category=args.category,
+                )
+                print(
+                    Formatter.color(
+                        f"✔ Exported {count} items to {output_path} (Markdown)",
+                        Formatter.GREEN,
+                    )
+                )
+
+            else:  # backup
+                import_service.backup_database(
+                    self.config.database_path,
+                    output_path,
+                )
+                print(
+                    Formatter.color(
+                        f"✔ Backed up database to {output_path}",
+                        Formatter.GREEN,
+                    )
+                )
+
             return 0
-        except Exception as e:
-            print(Formatter.color(f"Error exporting database: {e}", Formatter.RED))
+
+        except (OSError, ValueError) as exc:
+            print(
+                Formatter.color(
+                    f"Error exporting database: {exc}",
+                    Formatter.RED,
+                )
+            )
             return 1

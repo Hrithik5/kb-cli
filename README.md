@@ -1,183 +1,316 @@
-# kb — Developer Knowledge Engine ⚡
+<!-- ========================================================= -->
+<!--                          BANNER                           -->
+<!-- ========================================================= -->
 
-[![CI](https://github.com/hrithikchauhan/kb-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/hrithikchauhan/kb-cli/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
+<p align="center">
 
-> Lightning-fast, offline-first developer snippet and knowledge manager powered by SQLite FTS5.
+<!-- TODO: Replace with project banner -->
+
+<img src="assets/banner.png" width="100%" alt="kb">
+
+</p>
+
+<h1 align="center">
+kb
+</h1>
+
+<p align="center">
+
+⚡ Lightning-fast offline knowledge engine for developers.
+
+Store commands, snippets, notes, and engineering knowledge in a searchable SQLite database.
+
+</p>
+
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+
+![License](https://img.shields.io/badge/License-MIT-green)
+
+![CI](https://github.com/Hrithik5/kb-cli/actions/workflows/ci.yml/badge.svg)
+
+![SQLite](https://img.shields.io/badge/SQLite-FTS5-blue)
+
+</p>
+
+---
+
+# 🎬 Demo
+
+> **TODO:** Add terminal demo GIF
+
+<p align="center">
+
+<img src="assets/demo.gif" width="900">
+
+</p>
+
+---
+
+# Why kb?
+
+Every developer has accumulated years of knowledge:
+
+- Git commands
+- Docker snippets
+- SQL queries
+- Bash one-liners
+- Kubernetes commands
+- AWS CLI examples
+- Configuration snippets
+- Troubleshooting notes
+
+Unfortunately they're usually scattered across:
+
+- Markdown files
+- Notion
+- Obsidian
+- Browser bookmarks
+- Terminal history
+- Gists
+- Sticky notes
+
+Finding them later usually means opening multiple files and pressing **Ctrl + F** repeatedly.
+
+**kb** replaces that workflow with an indexed local knowledge engine powered by **SQLite Full-Text Search (FTS5)**.
+
+Everything stays local.
+
+Everything is searchable.
+
+Everything is instant.
+
+---
+
+# ✨ Features
+
+| Feature | Status |
+|----------|--------|
+| Offline-first | ✅ |
+| SQLite FTS5 Search | ✅ |
+| Categories | ✅ |
+| Tags | ✅ |
+| Favorites | ✅ |
+| Markdown Import | ✅ |
+| JSON Export | ✅ |
+| Interactive FZF | ✅ |
+| Clipboard Copy | ✅ |
+| Recent History | ✅ |
+| Statistics | ✅ |
+| Zero Cloud Services | ✅ |
+| Cross Platform | ✅ |
+
+---
+
+# 🚀 Installation
+
+## pip
 
 ```bash
-kb add git "git branch -D feature"
-kb add docker "docker compose up -d"
-kb find compose
+pip install kb-cli
 ```
 
-```
-Found 1 match:
+Verify installation
 
-#2 [DOCKER] Start Compose
-   tags: docker
-   docker compose up -d
+```bash
+kb --version
 ```
 
 ---
 
-## 💡 Why `kb`?
+# ⚡ Quick Start
 
-Developers constantly reuse shell commands, configuration snippets, SQL queries, and architectural conventions. Traditional notes apps (Obsidian, Notion) are bloated, slow, and break terminal workflow. Cloud services introduce latency and privacy concerns.
+Initialize the database
 
-`kb` is built on the **Unix philosophy**:
-- 🚀 **Sub-millisecond Search**: Full-text indexing with SQLite FTS5, Porter Stemmer, and BM25 ranking.
-- 🎯 **Interactive `fzf` & `tmux` Support**: Instant fuzzy finding with live snippet previews in terminal and tmux popup modals.
-- 🔒 **100% Offline & Private**: Stored locally in `~/.local/share/kb/kb.db`.
-- 📦 **Zero Runtime Dependencies**: Built with Python standard library. Ultra-lightweight and instant startup.
-- 🐚 **Shell Autocompletion**: Built-in completions for Bash, Zsh, and Fish.
-- 💻 **Cross Platform**: Seamlessly works across macOS, Linux, and Windows.
-
----
-
-## 📥 Installation
-
-### Homebrew (macOS / Linux)
-```bash
-brew tap hrithikchauhan/kb-cli
-brew install kb
-```
-
-### From Source
-```bash
-git clone https://github.com/hrithikchauhan/kb-cli.git
-cd kb-cli
-pip install .
-```
-
----
-
-## ⚡ Quickstart & Usage
-
-### 1. Initialize Database
 ```bash
 kb init
 ```
 
-### 2. Add Snippets & Notes
+Add your first command
+
 ```bash
-kb add git "git rebase --interactive HEAD~5" -t "Interactive Rebase" --tags "git,rebase"
-kb add terraform "terraform state mv module.vpc module.network" -t "Rename TF State"
+kb add git "git status" -t "Git Status"
 ```
 
-### 3. Interactive `fzf` & `tmux` Fuzzy Search 🔍
-Launch interactive search with real-time preview panes. If you are inside a **tmux** session, `kb` automatically pops up a floating modal (`fzf-tmux`):
+Search
+
+```bash
+kb find git
+```
+
+Open the interactive interface
 
 ```bash
 kb fzf
 ```
 
-#### Bind `Ctrl+K` in Zsh / Bash
-Add snippet picker directly to your shell prompt via keybinding (`scripts/kb-fzf.plugin.zsh`):
-```zsh
-source /path/to/kb-cli/scripts/kb-fzf.plugin.zsh
-```
-Pressing **`Ctrl+K`** in your shell opens the `fzf` popup and inserts the selected snippet into your terminal prompt!
+---
 
-### 4. Full-Text Search (FTS5)
+# 📖 Commands
+
+| Command | Description |
+|----------|-------------|
+| `kb init` | Initialize database |
+| `kb add` | Add new knowledge |
+| `kb list` | List entries |
+| `kb find` | Full-text search |
+| `kb get` | View an entry |
+| `kb edit` | Edit an entry |
+| `kb delete` | Delete an entry |
+| `kb favorite` | Mark favorite |
+| `kb recent` | Recently used |
+| `kb stats` | Usage statistics |
+| `kb import` | Import Markdown/TXT |
+| `kb export` | Export JSON/Markdown |
+| `kb copy` | Copy to clipboard |
+| `kb fzf` | Interactive fuzzy finder |
+
+---
+
+# 💡 Examples
+
+## Save Git Commands
+
+```bash
+kb add git "git rebase -i HEAD~3" \
+-t "Interactive Rebase" \
+--tags git,rebase
+```
+
+Search later
+
 ```bash
 kb find rebase
 ```
 
-### 5. Copy Directly to System Clipboard
-```bash
-kb copy 1
-# Output: ✔ Copied snippet #1 to clipboard!
-```
-
 ---
 
-## 🐚 Shell Autocompletion
-
-Generate autocompletion scripts dynamically for your shell:
+## Save SQL
 
 ```bash
-# Zsh
-kb completion zsh > ~/.zsh/completions/_kb
-
-# Bash
-kb completion bash > ~/.local/share/bash-completion/completions/kb
-
-# Fish
-kb completion fish > ~/.config/fish/completions/kb.fish
+kb add sql \
+"SELECT * FROM users WHERE active = TRUE;" \
+-t "Active Users"
 ```
 
 ---
 
-## 📁 Import & Export Workflows
+## Save AWS Commands
 
-### Bulk Import Markdown / Plain Text
 ```bash
-kb import markdown ~/Notes/git_cheatsheet.md -c git
-kb import txt ~/docker-commands.txt -c docker
+kb add aws \
+"aws s3 sync . s3://bucket-name"
 ```
 
-### Export to JSON or Markdown
+---
+
+## Export Everything
+
 ```bash
-kb export json ~/backup/kb_export.json
-kb export markdown ~/backup/kb_notes.md
-kb export backup ~/backup/kb.db
+kb export markdown notes.md
 ```
 
 ---
 
-## ⚙️ Configuration
+# 📸 Screenshots
 
-`kb` automatically reads settings from `~/.config/kb/config.toml`:
+> **TODO:** Add screenshots
 
-```toml
-# ~/.config/kb/config.toml
-database = "~/.local/share/kb/kb.db"
-editor = "nvim"
-default_limit = 10
-theme = "nord"
-pager = "less"
+```
+assets/
+
+search.png
+
+fzf.png
+
+stats.png
+
+list.png
 ```
 
 ---
 
-## 🏗️ Architecture
+# 🏗 Architecture
 
 ```
-┌──────────────────┐
-│      CLI         │ kb argparse CLI Router
-└─────────┬────────┘
-          ▼
-┌──────────────────┐
-│  Command Layer   │ add, find, fzf, edit, list, import...
-└─────────┬────────┘
-          ▼
-┌──────────────────┐
-│  Service Layer   │ Business validation & logic
-└─────────┬────────┘
-          ▼
-┌──────────────────┐
-│ Repository Layer │ SQLite queries & FTS5 BM25 ranking
-└─────────┬────────┘
-          ▼
-┌──────────────────┐
-│  SQLite + FTS5   │ Embedded FTS5 database engine
-└─────────┬────────┘
-          ▼
-┌──────────────────┐
-│ fzf / fzf-tmux   │ Interactive popup preview integration
-└──────────────────┘
+                 User
+                  │
+                  ▼
+        kb CLI Interface
+                  │
+                  ▼
+          Service Layer
+                  │
+                  ▼
+        Repository Layer
+                  │
+                  ▼
+     SQLite Database (FTS5)
+                  │
+                  ▼
+          Local File System
 ```
 
 ---
 
-## 🤝 Contributing
+# 📊 Project Status
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and development instructions.
+Current Version
+
+```
+v0.1.1
+```
+
+Current Features
+
+- SQLite FTS5 search
+- Categories
+- Tags
+- Favorites
+- Import / Export
+- Interactive FZF
+- Clipboard Support
+- Statistics
+- Shell Completion
 
 ---
 
-## 📄 License
+# 🛣 Roadmap
 
-This project is licensed under the [MIT License](LICENSE).
+## v0.2
+
+- [ ] Search highlighting
+- [ ] Rich preview UI
+- [ ] Better FZF integration
+- [ ] YAML import/export
+- [ ] Colored terminal output
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+If you'd like to contribute:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Run Ruff and Pytest
+6. Open a Pull Request
+
+---
+
+# 📜 License
+
+MIT License.
+
+---
+
+<p align="center">
+
+Made with ❤️ for developers who have too many notes.
+
+</p>

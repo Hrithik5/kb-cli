@@ -3,8 +3,9 @@ import sqlite3
 
 from kb import __version__
 from kb.commands.add_cmd import AddCommand
-from kb.commands.base import BaseCommand
+from kb.commands.clean_cmd import CleanCommand
 from kb.commands.completion_cmd import CompletionCommand
+from kb.commands.config_cmd import ConfigCommand
 from kb.commands.copy_cmd import CopyCommand
 from kb.commands.delete_cmd import DeleteCommand
 from kb.commands.edit_cmd import EditCommand
@@ -14,13 +15,11 @@ from kb.commands.find_cmd import FindCommand
 from kb.commands.fzf_cmd import FzfCommand
 from kb.commands.get_cmd import GetCommand
 from kb.commands.import_cmd import ImportCommand
+from kb.commands.info_cmd import InfoCommand
 from kb.commands.init_cmd import InitCommand
 from kb.commands.list_cmd import ListCommand
 from kb.commands.recent_cmd import RecentCommand
 from kb.commands.stats_cmd import StatsCommand
-from kb.commands.info_cmd import InfoCommand
-from kb.commands.config_cmd import ConfigCommand
-from kb.commands.clean_cmd import CleanCommand
 from kb.config import Config
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository

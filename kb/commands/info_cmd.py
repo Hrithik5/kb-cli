@@ -15,7 +15,6 @@ class InfoCommand(BaseCommand):
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
         parser.description = "Display runtime information about kb."
         # No additional arguments.
-        return
 
     def execute(self, args: argparse.Namespace) -> int:
         stats = self.service.get_stats()

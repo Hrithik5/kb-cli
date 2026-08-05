@@ -14,7 +14,6 @@ class ConfigCommand(BaseCommand):
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
         parser.description = "Display the current kb configuration."
         # No arguments.
-        return
 
     def execute(self, args: argparse.Namespace) -> int:
         print(

@@ -44,3 +44,6 @@ env/
 *.db
 *.sqlite3
 .kb/
+
+__pycache__/
+*.py[cod]

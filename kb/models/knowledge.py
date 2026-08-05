@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional, List
 
 
 @dataclass
@@ -9,12 +8,12 @@ class KnowledgeItem:
     category: str
     content: str
     title: str = ""
-    tags: List[str] = field(default_factory=list)
-    id: Optional[int] = None
+    tags: list[str] = field(default_factory=list)
+    id: int | None = None
     favorite: bool = False
     access_count: int = 0
-    created_at: Optional[str] = None
-    updated_at: Optional[str] = None
+    created_at: str | None = None
+    updated_at: str | None = None
 
     def __post_init__(self):
         if isinstance(self.tags, str):

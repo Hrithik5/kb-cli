@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+
 from kb.models.knowledge import KnowledgeItem
 from kb.repositories.knowledge_repository import KnowledgeRepository
 
@@ -13,8 +13,8 @@ class KnowledgeService:
         self,
         category: str,
         content: str,
-        title: Optional[str] = None,
-        tags: Optional[Union[List[str], str]] = None
+        title: str | None = None,
+        tags: list[str] | str | None = None
     ) -> KnowledgeItem:
         category = category.strip().lower()
         if not category:
@@ -42,9 +42,9 @@ class KnowledgeService:
         self,
         query: str,
         limit: int = 10,
-        category: Optional[str] = None,
+        category: str | None = None,
         track_access: bool = True
-    ) -> List[KnowledgeItem]:
+    ) -> list[KnowledgeItem]:
         query = query.strip()
         if not query:
             return self.repo.list_all(limit=limit, category=category)
@@ -56,10 +56,10 @@ class KnowledgeService:
                     self.repo.increment_access(item.id)
         return items
 
-    def list_items(self, limit: int = 20, category: Optional[str] = None) -> List[KnowledgeItem]:
+    def list_items(self, limit: int = 20, category: str | None = None) -> list[KnowledgeItem]:
         return self.repo.list_all(limit=limit, category=category)
 
-    def get_item(self, item_id: int, track_access: bool = False) -> Optional[KnowledgeItem]:
+    def get_item(self, item_id: int, track_access: bool = False) -> KnowledgeItem | None:
         item = self.repo.get_by_id(item_id)
         if item and track_access:
             self.repo.increment_access(item_id)
@@ -68,10 +68,10 @@ class KnowledgeService:
     def edit_item(
         self,
         item_id: int,
-        category: Optional[str] = None,
-        title: Optional[str] = None,
-        content: Optional[str] = None,
-        tags: Optional[Union[List[str], str]] = None
+        category: str | None = None,
+        title: str | None = None,
+        content: str | None = None,
+        tags: list[str] | str | None = None
     ) -> KnowledgeItem:
         item = self.repo.get_by_id(item_id)
         if not item:
@@ -98,13 +98,13 @@ class KnowledgeService:
     def delete_item(self, item_id: int) -> bool:
         return self.repo.delete(item_id)
 
-    def toggle_favorite(self, item_id: int) -> Optional[bool]:
+    def toggle_favorite(self, item_id: int) -> bool | None:
         return self.repo.toggle_favorite(item_id)
 
-    def get_recent(self, limit: int = 10) -> List[KnowledgeItem]:
+    def get_recent(self, limit: int = 10) -> list[KnowledgeItem]:
         return self.repo.get_recent(limit=limit)
 
-    def get_favorites(self, limit: int = 20) -> List[KnowledgeItem]:
+    def get_favorites(self, limit: int = 20) -> list[KnowledgeItem]:
         return self.repo.get_favorites(limit=limit)
 
     def get_stats(self) -> dict:

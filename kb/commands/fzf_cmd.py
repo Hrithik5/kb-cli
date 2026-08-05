@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import sys
+
 from kb.commands.base import BaseCommand
 from kb.utils.clipboard import copy_to_clipboard
 from kb.utils.formatter import Formatter

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+
 from kb.database import Database
 from kb.models.knowledge import KnowledgeItem
 
@@ -47,7 +47,7 @@ class KnowledgeRepository:
             item.id = cursor.lastrowid
         return item
 
-    def get_by_id(self, item_id: int) -> Optional[KnowledgeItem]:
+    def get_by_id(self, item_id: int) -> KnowledgeItem | None:
         sql = "SELECT * FROM knowledge WHERE id = ?;"
         with self.db.get_connection() as conn:
             row = conn.execute(sql, (item_id,)).fetchone()
@@ -55,7 +55,7 @@ class KnowledgeRepository:
                 return self._row_to_item(row)
         return None
 
-    def find(self, query: str, limit: int = 10, category: Optional[str] = None) -> List[KnowledgeItem]:
+    def find(self, query: str, limit: int = 10, category: str | None = None) -> list[KnowledgeItem]:
         """Performs FTS5 search using BM25 ranking."""
         # Sanitize query for FTS5 syntax
         fts_query = self._format_fts_query(query)
@@ -100,7 +100,7 @@ class KnowledgeRepository:
         formatted = " ".join(tokens[:-1] + [f"{tokens[-1]}*"]) if len(tokens) > 1 else f"{tokens[0]}*"
         return formatted
 
-    def _like_search(self, query: str, limit: int = 10, category: Optional[str] = None) -> List[KnowledgeItem]:
+    def _like_search(self, query: str, limit: int = 10, category: str | None = None) -> list[KnowledgeItem]:
         pattern = f"%{query}%"
         if category:
             sql = """
@@ -123,7 +123,7 @@ class KnowledgeRepository:
             rows = conn.execute(sql, params).fetchall()
             return [self._row_to_item(r) for r in rows]
 
-    def list_all(self, limit: int = 20, category: Optional[str] = None) -> List[KnowledgeItem]:
+    def list_all(self, limit: int = 20, category: str | None = None) -> list[KnowledgeItem]:
         if category:
             sql = "SELECT * FROM knowledge WHERE category = ? ORDER BY updated_at DESC LIMIT ?;"
             params = (category, limit)
@@ -165,7 +165,7 @@ class KnowledgeRepository:
         with self.db.get_connection() as conn:
             conn.execute(sql, (item_id,))
 
-    def toggle_favorite(self, item_id: int) -> Optional[bool]:
+    def toggle_favorite(self, item_id: int) -> bool | None:
         item = self.get_by_id(item_id)
         if not item:
             return None
@@ -175,13 +175,13 @@ class KnowledgeRepository:
             conn.execute(sql, (1 if new_fav else 0, item_id))
         return new_fav
 
-    def get_recent(self, limit: int = 10) -> List[KnowledgeItem]:
+    def get_recent(self, limit: int = 10) -> list[KnowledgeItem]:
         sql = "SELECT * FROM knowledge ORDER BY updated_at DESC LIMIT ?;"
         with self.db.get_connection() as conn:
             rows = conn.execute(sql, (limit,)).fetchall()
             return [self._row_to_item(r) for r in rows]
 
-    def get_favorites(self, limit: int = 20) -> List[KnowledgeItem]:
+    def get_favorites(self, limit: int = 20) -> list[KnowledgeItem]:
         sql = "SELECT * FROM knowledge WHERE favorite = 1 ORDER BY updated_at DESC LIMIT ?;"
         with self.db.get_connection() as conn:
             rows = conn.execute(sql, (limit,)).fetchall()

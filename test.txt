@@ -385,3 +385,225 @@ F405 `run_cli` may be undefined, or defined from star imports
    |
 
 Found 37 errors.
+RUF013 PEP 484 prohibits implicit `Optional`
+  --> kb/cli.py:61:24
+   |
+61 | def run_cli(args_list: list[str] = None) -> int:
+   |                        ^^^^^^^^^
+62 |     parser = build_parser()
+63 |     try:
+   |
+help: Convert to `T | None`
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+  --> kb/cli.py:78:5
+   |
+76 |       try:
+77 |           db.init_schema()
+78 | /     except Exception:
+79 | |         pass
+   | |____________^
+80 |
+81 |       repo = KnowledgeRepository(db)
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/cli.py:78:12
+   |
+76 |     try:
+77 |         db.init_schema()
+78 |     except Exception:
+   |            ^^^^^^^^^
+79 |         pass
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/commands/export_cmd.py:34:16
+   |
+32 |                 print(Formatter.color(f"✔ Backed up database to {output_path}", Formatter.GREEN))
+33 |             return 0
+34 |         except Exception as e:
+   |                ^^^^^^^^^
+35 |             print(Formatter.color(f"Error exporting database: {e}", Formatter.RED))
+36 |             return 1
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/commands/fzf_cmd.py:92:16
+   |
+91 |             return 0
+92 |         except Exception as e:
+   |                ^^^^^^^^^
+93 |             print(Formatter.color(f"Error launching fzf: {e}", Formatter.RED), file=sys.stderr)
+94 |             return 1
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/commands/import_cmd.py:31:16
+   |
+29 |                 print(Formatter.color(f"✔ Imported #{item.id} [{item.category}] {item.title}", Formatter.GREEN))
+30 |             return 0
+31 |         except Exception as e:
+   |                ^^^^^^^^^
+32 |             print(Formatter.color(f"Error importing file: {e}", Formatter.RED))
+33 |             return 1
+   |
+
+RUF013 PEP 484 prohibits implicit `Optional`
+  --> kb/config.py:38:32
+   |
+37 |     @classmethod
+38 |     def load(cls, config_path: Path = None) -> "Config":
+   |                                ^^^^
+39 |         if isinstance(config_path, str):
+40 |             config_path = Path(config_path)
+   |
+help: Convert to `T | None`
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+  --> kb/config.py:71:9
+   |
+69 |               if "pager" in data:
+70 |                   cfg.pager = str(data["pager"])
+71 | /         except Exception:
+72 | |             pass  # Fallback to default configuration if parsing fails
+   | |________________^
+73 |
+74 |           return cfg
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/config.py:71:16
+   |
+69 |             if "pager" in data:
+70 |                 cfg.pager = str(data["pager"])
+71 |         except Exception:
+   |                ^^^^^^^^^
+72 |             pass  # Fallback to default configuration if parsing fails
+   |
+
+RUF013 PEP 484 prohibits implicit `Optional`
+  --> kb/config.py:91:48
+   |
+89 |         return result
+90 |
+91 |     def save_default_config(self, config_path: Path = None) -> Path:
+   |                                                ^^^^
+92 |         if config_path is None:
+93 |             config_path = self.get_config_dir() / "config.toml"
+   |
+help: Convert to `T | None`
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/main.py:12:12
+   |
+10 |         print("\nOperation cancelled.")
+11 |         sys.exit(130)
+12 |     except Exception as e:
+   |            ^^^^^^^^^
+13 |         print(f"Error: {e}", file=sys.stderr)
+14 |         sys.exit(1)
+   |
+
+DTZ005 `datetime.datetime.now()` called without a `tz` argument
+  --> kb/models/knowledge.py:22:15
+   |
+20 |             # Parse comma-separated string to list if necessary
+21 |             self.tags = [t.strip() for t in self.tags.split(",") if t.strip()]
+22 |         now = datetime.now().isoformat()
+   |               ^^^^^^^^^^^^^^
+23 |         if not self.created_at:
+24 |             self.created_at = now
+   |
+help: Pass a `datetime.timezone` object to the `tz` parameter
+
+DTZ005 `datetime.datetime.now()` called without a `tz` argument
+  --> kb/repositories/knowledge_repository.py:30:15
+   |
+28 |     def add(self, item: KnowledgeItem) -> KnowledgeItem:
+29 |         tags_str = item.tags_str
+30 |         now = datetime.now().isoformat()
+   |               ^^^^^^^^^^^^^^
+31 |         sql = """
+32 |             INSERT INTO knowledge (category, title, content, tags, favorite, access_count, created_at, updated_at)
+   |
+help: Pass a `datetime.timezone` object to the `tz` parameter
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/repositories/knowledge_repository.py:90:16
+   |
+88 |                 rows = conn.execute(sql, params).fetchall()
+89 |                 return [self._row_to_item(r) for r in rows]
+90 |         except Exception:
+   |                ^^^^^^^^^
+91 |             # Fallback to LIKE search if FTS syntax error
+92 |             return self._like_search(query, limit, category)
+   |
+
+DTZ005 `datetime.datetime.now()` called without a `tz` argument
+   --> kb/repositories/knowledge_repository.py:139:27
+    |
+138 |     def update(self, item: KnowledgeItem) -> KnowledgeItem:
+139 |         item.updated_at = datetime.now().isoformat()
+    |                           ^^^^^^^^^^^^^^
+140 |         sql = """
+141 |             UPDATE knowledge
+    |
+help: Pass a `datetime.timezone` object to the `tz` parameter
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+  --> kb/utils/clipboard.py:29:5
+   |
+27 |               process.communicate(text.encode("utf-8"))
+28 |               return process.returncode == 0
+29 | /     except Exception:
+30 | |         pass
+   | |____________^
+31 |       return False
+   |
+
+BLE001 Do not catch blind exception: `Exception`
+  --> kb/utils/clipboard.py:29:12
+   |
+27 |             process.communicate(text.encode("utf-8"))
+28 |             return process.returncode == 0
+29 |     except Exception:
+   |            ^^^^^^^^^
+30 |         pass
+31 |     return False
+   |
+
+RUF059 Unpacked variable `service` is never used
+  --> tests/test_import_export.py:19:17
+   |
+18 | def test_markdown_import_export(tmp_path):
+19 |     service_ie, service, db_path, tmp_path = create_test_import_export(tmp_path)
+   |                 ^^^^^^^
+20 |
+21 |     md_file = tmp_path / "sample.md"
+   |
+help: Prefix it with an underscore or any other dummy variable pattern
+
+RUF059 Unpacked variable `db_path` is never used
+  --> tests/test_import_export.py:19:26
+   |
+18 | def test_markdown_import_export(tmp_path):
+19 |     service_ie, service, db_path, tmp_path = create_test_import_export(tmp_path)
+   |                          ^^^^^^^
+20 |
+21 |     md_file = tmp_path / "sample.md"
+   |
+help: Prefix it with an underscore or any other dummy variable pattern
+
+RUF059 Unpacked variable `db_path` is never used
+  --> tests/test_import_export.py:35:26
+   |
+34 | def test_json_export(tmp_path):
+35 |     service_ie, service, db_path, tmp_path = create_test_import_export(tmp_path)
+   |                          ^^^^^^^
+36 |     service.add_item(category="k8s", content="kubectl get pods", title="Get Pods")
+   |
+help: Prefix it with an underscore or any other dummy variable pattern
+
+Found 20 errors.
+No fixes available (6 hidden fixes can be enabled with the `--unsafe-fixes` option).

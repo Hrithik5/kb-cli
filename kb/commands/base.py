@@ -1,5 +1,6 @@
 import argparse
 from abc import ABC, abstractmethod
+
 from kb.config import Config
 from kb.services.knowledge_service import KnowledgeService
 
@@ -18,9 +19,7 @@ class BaseCommand(ABC):
     @abstractmethod
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
         """Configures subcommand arguments."""
-        pass
 
     @abstractmethod
     def execute(self, args: argparse.Namespace) -> int:
         """Executes subcommand logic. Returns exit status code (0 for success)."""
-        pass

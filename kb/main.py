@@ -1,4 +1,5 @@
 import sys
+
 from kb.cli import run_cli
 
 

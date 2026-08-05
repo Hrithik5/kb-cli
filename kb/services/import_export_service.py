@@ -1,7 +1,7 @@
 import json
 import shutil
 from pathlib import Path
-from typing import List, Optional
+
 from kb.models.knowledge import KnowledgeItem
 from kb.services.knowledge_service import KnowledgeService
 
@@ -12,7 +12,7 @@ class ImportExportService:
     def __init__(self, service: KnowledgeService):
         self.service = service
 
-    def import_markdown_file(self, file_path: Path, category: Optional[str] = None) -> List[KnowledgeItem]:
+    def import_markdown_file(self, file_path: Path, category: str | None = None) -> list[KnowledgeItem]:
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
 
@@ -44,7 +44,7 @@ class ImportExportService:
 
         return items
 
-    def import_txt_file(self, file_path: Path, category: Optional[str] = None, title: Optional[str] = None) -> KnowledgeItem:
+    def import_txt_file(self, file_path: Path, category: str | None = None, title: str | None = None) -> KnowledgeItem:
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
 
@@ -54,7 +54,7 @@ class ImportExportService:
 
         return self.service.add_item(category=cat, content=content, title=t)
 
-    def export_json(self, output_path: Path, category: Optional[str] = None) -> int:
+    def export_json(self, output_path: Path, category: str | None = None) -> int:
         items = self.service.list_items(limit=10000, category=category)
         data = [
             {
@@ -74,7 +74,7 @@ class ImportExportService:
         output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
         return len(items)
 
-    def export_markdown(self, output_path: Path, category: Optional[str] = None) -> int:
+    def export_markdown(self, output_path: Path, category: str | None = None) -> int:
         items = self.service.list_items(limit=10000, category=category)
         md_lines = ["# Knowledge Base Export\n"]
 

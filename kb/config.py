@@ -1,7 +1,7 @@
 import os
 import sys
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 
 if sys.version_info >= (3, 11):
     import tomllib

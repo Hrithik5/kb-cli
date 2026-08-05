@@ -1,4 +1,5 @@
 import argparse
+
 from kb.commands.base import BaseCommand
 from kb.utils.clipboard import copy_to_clipboard
 from kb.utils.formatter import Formatter

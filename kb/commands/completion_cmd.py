@@ -1,6 +1,6 @@
 import argparse
-from kb.commands.base import BaseCommand
 
+from kb.commands.base import BaseCommand
 
 ZSH_COMPLETION = """#compdef kb
 

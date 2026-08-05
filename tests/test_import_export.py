@@ -1,8 +1,9 @@
 import json
+
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository
-from kb.services.knowledge_service import KnowledgeService
 from kb.services.import_export_service import ImportExportService
+from kb.services.knowledge_service import KnowledgeService
 
 
 def create_test_import_export(tmp_path):

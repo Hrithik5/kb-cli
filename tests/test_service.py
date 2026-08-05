@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository
 from kb.services.knowledge_service import KnowledgeService

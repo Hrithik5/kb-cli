@@ -1,29 +1,28 @@
 import argparse
-from typing import List, Type
+
 from kb import __version__
+from kb.commands.add_cmd import AddCommand
+from kb.commands.base import BaseCommand
+from kb.commands.completion_cmd import CompletionCommand
+from kb.commands.copy_cmd import CopyCommand
+from kb.commands.delete_cmd import DeleteCommand
+from kb.commands.edit_cmd import EditCommand
+from kb.commands.export_cmd import ExportCommand
+from kb.commands.favorite_cmd import FavoriteCommand
+from kb.commands.find_cmd import FindCommand
+from kb.commands.fzf_cmd import FzfCommand
+from kb.commands.get_cmd import GetCommand
+from kb.commands.import_cmd import ImportCommand
+from kb.commands.init_cmd import InitCommand
+from kb.commands.list_cmd import ListCommand
+from kb.commands.recent_cmd import RecentCommand
+from kb.commands.stats_cmd import StatsCommand
 from kb.config import Config
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository
 from kb.services.knowledge_service import KnowledgeService
-from kb.commands.base import BaseCommand
-from kb.commands.init_cmd import InitCommand
-from kb.commands.add_cmd import AddCommand
-from kb.commands.find_cmd import FindCommand
-from kb.commands.list_cmd import ListCommand
-from kb.commands.edit_cmd import EditCommand
-from kb.commands.delete_cmd import DeleteCommand
-from kb.commands.import_cmd import ImportCommand
-from kb.commands.export_cmd import ExportCommand
-from kb.commands.stats_cmd import StatsCommand
-from kb.commands.favorite_cmd import FavoriteCommand
-from kb.commands.recent_cmd import RecentCommand
-from kb.commands.copy_cmd import CopyCommand
-from kb.commands.fzf_cmd import FzfCommand
-from kb.commands.get_cmd import GetCommand
-from kb.commands.completion_cmd import CompletionCommand
 
-
-COMMAND_CLASSES: List[Type[BaseCommand]] = [
+COMMAND_CLASSES: list[type[BaseCommand]] = [
     InitCommand,
     AddCommand,
     FindCommand,
@@ -59,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def run_cli(args_list: List[str] = None) -> int:
+def run_cli(args_list: list[str] = None) -> int:
     parser = build_parser()
     try:
         args = parser.parse_args(args_list)

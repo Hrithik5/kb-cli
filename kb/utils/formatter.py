@@ -1,5 +1,5 @@
 import sys
-from typing import List
+
 from kb.models.knowledge import KnowledgeItem
 
 
@@ -51,7 +51,7 @@ class Formatter:
         return "\n".join(lines)
 
     @classmethod
-    def format_items_list(cls, items: List[KnowledgeItem]) -> str:
+    def format_items_list(cls, items: list[KnowledgeItem]) -> str:
         if not items:
             return cls.color("No matches found.", cls.YELLOW)
 

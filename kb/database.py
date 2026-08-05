@@ -1,6 +1,5 @@
 import sqlite3
 from pathlib import Path
-from typing import Optional
 
 
 class Database:
@@ -22,7 +21,7 @@ class Database:
             self._conn.execute("PRAGMA foreign_keys = ON;")
         return self._conn
 
-    def init_schema(self, schema_path: Optional[Path] = None):
+    def init_schema(self, schema_path: Path | None = None):
         """Executes the schema SQL script to set up tables, FTS5 virtual table, and triggers."""
         if schema_path is None:
             schema_path = Path(__file__).parent / "schema.sql"

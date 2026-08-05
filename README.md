@@ -35,8 +35,8 @@ Store commands, snippets, SQL queries, troubleshooting notes, and engineering kn
 
 ## 🎬 Demo
 
-<p align="center">
-<img src="assets/demo.gif" width="900" alt="kb demo">
+<p align="left">
+<img src="assets/demo.gif" width="600" alt="kb demo">
 </p>
 
 ---

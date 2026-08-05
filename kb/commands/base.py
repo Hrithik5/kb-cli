@@ -1,6 +1,5 @@
 import argparse
 from abc import ABC, abstractmethod
-from typing import Any
 from kb.config import Config
 from kb.services.knowledge_service import KnowledgeService
 

@@ -1,0 +1,387 @@
+F403 `from tests.test_database import *` used; unable to detect undefined names
+  --> tests/run_tests.py:9:1
+   |
+ 7 | sys.path.insert(0, str(Path(__file__).parent.parent))
+ 8 |
+ 9 | from tests.test_database import *
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+10 | from tests.test_repository import *
+11 | from tests.test_service import *
+   |
+
+F403 `from tests.test_repository import *` used; unable to detect undefined names
+  --> tests/run_tests.py:10:1
+   |
+ 9 | from tests.test_database import *
+10 | from tests.test_repository import *
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+11 | from tests.test_service import *
+12 | from tests.test_cli import *
+   |
+
+F403 `from tests.test_service import *` used; unable to detect undefined names
+  --> tests/run_tests.py:11:1
+   |
+ 9 | from tests.test_database import *
+10 | from tests.test_repository import *
+11 | from tests.test_service import *
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+12 | from tests.test_cli import *
+13 | from tests.test_import_export import *
+   |
+
+F403 `from tests.test_cli import *` used; unable to detect undefined names
+  --> tests/run_tests.py:12:1
+   |
+10 | from tests.test_repository import *
+11 | from tests.test_service import *
+12 | from tests.test_cli import *
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 | from tests.test_import_export import *
+   |
+
+F403 `from tests.test_import_export import *` used; unable to detect undefined names
+  --> tests/run_tests.py:13:1
+   |
+11 | from tests.test_service import *
+12 | from tests.test_cli import *
+13 | from tests.test_import_export import *
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+F405 `test_in_memory_database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:18:9
+   |
+16 | class TestRunner(unittest.TestCase):
+17 |     def test_database_flow(self):
+18 |         test_in_memory_database()
+   |         ^^^^^^^^^^^^^^^^^^^^^^^
+19 |         test_schema_initialization()
+20 |         test_fts5_support()
+   |
+
+F405 `test_schema_initialization` may be undefined, or defined from star imports
+  --> tests/run_tests.py:19:9
+   |
+17 |     def test_database_flow(self):
+18 |         test_in_memory_database()
+19 |         test_schema_initialization()
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+20 |         test_fts5_support()
+   |
+
+F405 `test_fts5_support` may be undefined, or defined from star imports
+  --> tests/run_tests.py:20:9
+   |
+18 |         test_in_memory_database()
+19 |         test_schema_initialization()
+20 |         test_fts5_support()
+   |         ^^^^^^^^^^^^^^^^^
+21 |
+22 |     def test_repository_flow(self):
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:23:14
+   |
+22 |     def test_repository_flow(self):
+23 |         db = Database(Path(":memory:"))
+   |              ^^^^^^^^
+24 |         db.init_schema()
+25 |         repo = KnowledgeRepository(db)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:25:16
+   |
+23 |         db = Database(Path(":memory:"))
+24 |         db.init_schema()
+25 |         repo = KnowledgeRepository(db)
+   |                ^^^^^^^^^^^^^^^^^^^
+26 |         test_add_and_get_by_id(repo)
+   |
+
+F405 `test_add_and_get_by_id` may be undefined, or defined from star imports
+  --> tests/run_tests.py:26:9
+   |
+24 |         db.init_schema()
+25 |         repo = KnowledgeRepository(db)
+26 |         test_add_and_get_by_id(repo)
+   |         ^^^^^^^^^^^^^^^^^^^^^^
+27 |
+28 |         db2 = Database(Path(":memory:"))
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:28:15
+   |
+26 |         test_add_and_get_by_id(repo)
+27 |
+28 |         db2 = Database(Path(":memory:"))
+   |               ^^^^^^^^
+29 |         db2.init_schema()
+30 |         repo2 = KnowledgeRepository(db2)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:30:17
+   |
+28 |         db2 = Database(Path(":memory:"))
+29 |         db2.init_schema()
+30 |         repo2 = KnowledgeRepository(db2)
+   |                 ^^^^^^^^^^^^^^^^^^^
+31 |         test_fts5_search(repo2)
+   |
+
+F405 `test_fts5_search` may be undefined, or defined from star imports
+  --> tests/run_tests.py:31:9
+   |
+29 |         db2.init_schema()
+30 |         repo2 = KnowledgeRepository(db2)
+31 |         test_fts5_search(repo2)
+   |         ^^^^^^^^^^^^^^^^
+32 |
+33 |         db3 = Database(Path(":memory:"))
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:33:15
+   |
+31 |         test_fts5_search(repo2)
+32 |
+33 |         db3 = Database(Path(":memory:"))
+   |               ^^^^^^^^
+34 |         db3.init_schema()
+35 |         repo3 = KnowledgeRepository(db3)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:35:17
+   |
+33 |         db3 = Database(Path(":memory:"))
+34 |         db3.init_schema()
+35 |         repo3 = KnowledgeRepository(db3)
+   |                 ^^^^^^^^^^^^^^^^^^^
+36 |         test_update_and_delete(repo3)
+   |
+
+F405 `test_update_and_delete` may be undefined, or defined from star imports
+  --> tests/run_tests.py:36:9
+   |
+34 |         db3.init_schema()
+35 |         repo3 = KnowledgeRepository(db3)
+36 |         test_update_and_delete(repo3)
+   |         ^^^^^^^^^^^^^^^^^^^^^^
+37 |
+38 |         db4 = Database(Path(":memory:"))
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:38:15
+   |
+36 |         test_update_and_delete(repo3)
+37 |
+38 |         db4 = Database(Path(":memory:"))
+   |               ^^^^^^^^
+39 |         db4.init_schema()
+40 |         repo4 = KnowledgeRepository(db4)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:40:17
+   |
+38 |         db4 = Database(Path(":memory:"))
+39 |         db4.init_schema()
+40 |         repo4 = KnowledgeRepository(db4)
+   |                 ^^^^^^^^^^^^^^^^^^^
+41 |         test_toggle_favorite_and_stats(repo4)
+   |
+
+F405 `test_toggle_favorite_and_stats` may be undefined, or defined from star imports
+  --> tests/run_tests.py:41:9
+   |
+39 |         db4.init_schema()
+40 |         repo4 = KnowledgeRepository(db4)
+41 |         test_toggle_favorite_and_stats(repo4)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+42 |
+43 |     def test_service_flow(self):
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:44:14
+   |
+43 |     def test_service_flow(self):
+44 |         db = Database(Path(":memory:"))
+   |              ^^^^^^^^
+45 |         db.init_schema()
+46 |         repo = KnowledgeRepository(db)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:46:16
+   |
+44 |         db = Database(Path(":memory:"))
+45 |         db.init_schema()
+46 |         repo = KnowledgeRepository(db)
+   |                ^^^^^^^^^^^^^^^^^^^
+47 |         service = KnowledgeService(repo)
+   |
+
+F405 `KnowledgeService` may be undefined, or defined from star imports
+  --> tests/run_tests.py:47:19
+   |
+45 |         db.init_schema()
+46 |         repo = KnowledgeRepository(db)
+47 |         service = KnowledgeService(repo)
+   |                   ^^^^^^^^^^^^^^^^
+48 |
+49 |         test_add_item_validation(service)
+   |
+
+F405 `test_add_item_validation` may be undefined, or defined from star imports
+  --> tests/run_tests.py:49:9
+   |
+47 |         service = KnowledgeService(repo)
+48 |
+49 |         test_add_item_validation(service)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^
+50 |         test_find_and_access_tracking(service)
+51 |         test_edit_service(service)
+   |
+
+F405 `test_find_and_access_tracking` may be undefined, or defined from star imports
+  --> tests/run_tests.py:50:9
+   |
+49 |         test_add_item_validation(service)
+50 |         test_find_and_access_tracking(service)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+51 |         test_edit_service(service)
+   |
+
+F405 `test_edit_service` may be undefined, or defined from star imports
+  --> tests/run_tests.py:51:9
+   |
+49 |         test_add_item_validation(service)
+50 |         test_find_and_access_tracking(service)
+51 |         test_edit_service(service)
+   |         ^^^^^^^^^^^^^^^^^
+52 |
+53 |     def test_import_export_flow(self):
+   |
+
+F405 `Database` may be undefined, or defined from star imports
+  --> tests/run_tests.py:58:18
+   |
+56 |             tmp_path = Path(tmpdir)
+57 |             db_path = tmp_path / "test.db"
+58 |             db = Database(db_path)
+   |                  ^^^^^^^^
+59 |             db.init_schema()
+60 |             repo = KnowledgeRepository(db)
+   |
+
+F405 `KnowledgeRepository` may be undefined, or defined from star imports
+  --> tests/run_tests.py:60:20
+   |
+58 |             db = Database(db_path)
+59 |             db.init_schema()
+60 |             repo = KnowledgeRepository(db)
+   |                    ^^^^^^^^^^^^^^^^^^^
+61 |             service = KnowledgeService(repo)
+62 |             ie_tuple = (ImportExportService(service), service, db_path, tmp_path)
+   |
+
+F405 `KnowledgeService` may be undefined, or defined from star imports
+  --> tests/run_tests.py:61:23
+   |
+59 |             db.init_schema()
+60 |             repo = KnowledgeRepository(db)
+61 |             service = KnowledgeService(repo)
+   |                       ^^^^^^^^^^^^^^^^
+62 |             ie_tuple = (ImportExportService(service), service, db_path, tmp_path)
+   |
+
+F405 `ImportExportService` may be undefined, or defined from star imports
+  --> tests/run_tests.py:62:25
+   |
+60 |             repo = KnowledgeRepository(db)
+61 |             service = KnowledgeService(repo)
+62 |             ie_tuple = (ImportExportService(service), service, db_path, tmp_path)
+   |                         ^^^^^^^^^^^^^^^^^^^
+63 |
+64 |             test_markdown_import_export(ie_tuple)
+   |
+
+F405 `test_markdown_import_export` may be undefined, or defined from star imports
+  --> tests/run_tests.py:64:13
+   |
+62 |             ie_tuple = (ImportExportService(service), service, db_path, tmp_path)
+63 |
+64 |             test_markdown_import_export(ie_tuple)
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+65 |             test_json_export(ie_tuple)
+   |
+
+F405 `test_json_export` may be undefined, or defined from star imports
+  --> tests/run_tests.py:65:13
+   |
+64 |             test_markdown_import_export(ie_tuple)
+65 |             test_json_export(ie_tuple)
+   |             ^^^^^^^^^^^^^^^^
+66 |
+67 |     def test_cli_flow(self):
+   |
+
+F405 `run_cli` may be undefined, or defined from star imports
+  --> tests/run_tests.py:75:20
+   |
+73 |             config_file.write_text(f'database = "{db_file}"\n', encoding="utf-8")
+74 |
+75 |             assert run_cli(["--config-file", str(config_file), "init"]) == 0
+   |                    ^^^^^^^
+76 |             assert run_cli(["--config-file", str(config_file), "add", "git", "git status", "-t", "Status", "--tags", "git,status"]) ==…
+77 |             assert run_cli(["--config-file", str(config_file), "find", "status"]) == 0
+   |
+
+F405 `run_cli` may be undefined, or defined from star imports
+  --> tests/run_tests.py:76:20
+   |
+75 | …     assert run_cli(["--config-file", str(config_file), "init"]) == 0
+76 | …     assert run_cli(["--config-file", str(config_file), "add", "git", "git status", "-t", "Status", "--tags", "git,status"]) == 0
+   |              ^^^^^^^
+77 | …     assert run_cli(["--config-file", str(config_file), "find", "status"]) == 0
+78 | …     assert run_cli(["--config-file", str(config_file), "stats"]) == 0
+   |
+
+F405 `run_cli` may be undefined, or defined from star imports
+  --> tests/run_tests.py:77:20
+   |
+75 | …     assert run_cli(["--config-file", str(config_file), "init"]) == 0
+76 | …     assert run_cli(["--config-file", str(config_file), "add", "git", "git status", "-t", "Status", "--tags", "git,status"]) == 0
+77 | …     assert run_cli(["--config-file", str(config_file), "find", "status"]) == 0
+   |              ^^^^^^^
+78 | …     assert run_cli(["--config-file", str(config_file), "stats"]) == 0
+79 | …     assert run_cli(["--config-file", str(config_file), "delete", "1"]) == 0
+   |
+
+F405 `run_cli` may be undefined, or defined from star imports
+  --> tests/run_tests.py:78:20
+   |
+76 | …     assert run_cli(["--config-file", str(config_file), "add", "git", "git status", "-t", "Status", "--tags", "git,status"]) == 0
+77 | …     assert run_cli(["--config-file", str(config_file), "find", "status"]) == 0
+78 | …     assert run_cli(["--config-file", str(config_file), "stats"]) == 0
+   |              ^^^^^^^
+79 | …     assert run_cli(["--config-file", str(config_file), "delete", "1"]) == 0
+   |
+
+F405 `run_cli` may be undefined, or defined from star imports
+  --> tests/run_tests.py:79:20
+   |
+77 |             assert run_cli(["--config-file", str(config_file), "find", "status"]) == 0
+78 |             assert run_cli(["--config-file", str(config_file), "stats"]) == 0
+79 |             assert run_cli(["--config-file", str(config_file), "delete", "1"]) == 0
+   |                    ^^^^^^^
+   |
+
+Found 37 errors.

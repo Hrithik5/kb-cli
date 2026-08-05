@@ -1,4 +1,3 @@
-from pathlib import Path
 from kb.cli import run_cli
 
 

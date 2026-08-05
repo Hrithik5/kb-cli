@@ -1,5 +1,4 @@
 import argparse
-import sys
 from typing import List, Type
 from kb import __version__
 from kb.config import Config

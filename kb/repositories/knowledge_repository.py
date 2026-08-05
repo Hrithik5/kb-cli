@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import List, Optional
 from kb.database import Database
 from kb.models.knowledge import KnowledgeItem
 

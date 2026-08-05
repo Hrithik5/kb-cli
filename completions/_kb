@@ -1,0 +1,48 @@
+#compdef kb
+
+_kb_subcommands=(
+    'init:Initialize database and configuration'
+    'add:Add a new knowledge entry or snippet'
+    'find:Search knowledge base entries using FTS5'
+    'list:List knowledge base items'
+    'edit:Edit an existing entry by ID'
+    'delete:Delete an entry by ID'
+    'import:Import notes from markdown or txt files'
+    'export:Export entries to JSON, Markdown, or backup'
+    'stats:Display knowledge base statistics'
+    'favorite:Toggle favorite status or list favorites'
+    'recent:Show recently added or updated entries'
+    'copy:Copy snippet content to system clipboard'
+    'fzf:Interactive fuzzy search interface (supports tmux)'
+    'get:Get raw snippet content by ID'
+    'completion:Generate shell autocompletion script'
+)
+
+_kb() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(-v --version)'{-v,--version}'[Show version]' \
+        '--config-file[Specify path to custom config file]:file:_files' \
+        '1: :->command' \
+        '*: :->args'
+
+    case $state in
+        command)
+            _describe -t commands 'kb command' _kb_subcommands
+            ;;
+        args)
+            case $line[1] in
+                add|find|list|import|export|fzf)
+                    _arguments '-c[Category]:category:' '--category[Category]:category:'
+                    ;;
+                completion)
+                    _values 'shell' bash zsh fish
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_kb "$@"

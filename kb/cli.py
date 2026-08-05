@@ -27,7 +27,7 @@ from kb.repositories.knowledge_repository import KnowledgeRepository
 from kb.services.knowledge_service import KnowledgeService
 from kb.shell import InteractiveShell
 
-COMMAND_CLASSES: list[type[BaseCommand]] = [
+COMMAND_CLASSES = [
     InitCommand,
     AddCommand,
     FindCommand,

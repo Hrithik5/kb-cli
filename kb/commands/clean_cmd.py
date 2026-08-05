@@ -13,6 +13,9 @@ class CleanCommand(BaseCommand):
 
     @classmethod
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
+        parser.description = (
+            "Delete all knowledge items and recreate an empty database."
+        )
         parser.add_argument(
             "-y",
             "--yes",

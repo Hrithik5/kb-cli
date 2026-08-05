@@ -13,6 +13,7 @@ class InfoCommand(BaseCommand):
 
     @classmethod
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
+        parser.description = "Display runtime information about kb."
         # No additional arguments.
         return
 

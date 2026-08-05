@@ -12,6 +12,7 @@ class ConfigCommand(BaseCommand):
 
     @classmethod
     def configure_parser(cls, parser: argparse.ArgumentParser) -> None:
+        parser.description = "Display the current kb configuration."
         # No arguments.
         return
 

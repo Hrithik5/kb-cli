@@ -1,41 +1,60 @@
-
 from kb.models.knowledge import KnowledgeItem
 from kb.repositories.knowledge_repository import KnowledgeRepository
 
 
 class KnowledgeService:
-    """Business logic layer for managing knowledge items and search workflows."""
+    """Business logic layer for managing knowledge items."""
 
     def __init__(self, repo: KnowledgeRepository):
         self.repo = repo
+
+    @staticmethod
+    def _normalize_tags(
+        tags: list[str] | str | None,
+    ) -> list[str]:
+        if tags is None:
+            return []
+
+        if isinstance(tags, str):
+            values = tags.split(",")
+        else:
+            values = tags
+
+        seen: set[str] = set()
+        normalized: list[str] = []
+
+        for tag in values:
+            clean = tag.strip().lower()
+            if clean and clean not in seen:
+                seen.add(clean)
+                normalized.append(clean)
+
+        return normalized
 
     def add_item(
         self,
         category: str,
         content: str,
         title: str | None = None,
-        tags: list[str] | str | None = None
+        tags: list[str] | str | None = None,
     ) -> KnowledgeItem:
         category = category.strip().lower()
+
         if not category:
             raise ValueError("Category cannot be empty.")
+
         content = content.strip()
+
         if not content:
             raise ValueError("Content cannot be empty.")
-
-        if isinstance(tags, str):
-            tag_list = [t.strip() for t in tags.split(",") if t.strip()]
-        elif isinstance(tags, list):
-            tag_list = [t.strip() for t in tags if t.strip()]
-        else:
-            tag_list = []
 
         item = KnowledgeItem(
             category=category,
             content=content,
             title=title.strip() if title else "",
-            tags=tag_list
+            tags=self._normalize_tags(tags),
         )
+
         return self.repo.add(item)
 
     def find_items(
@@ -43,26 +62,52 @@ class KnowledgeService:
         query: str,
         limit: int = 10,
         category: str | None = None,
-        track_access: bool = True
+        track_access: bool = True,
     ) -> list[KnowledgeItem]:
         query = query.strip()
-        if not query:
-            return self.repo.list_all(limit=limit, category=category)
 
-        items = self.repo.find(query=query, limit=limit, category=category)
+        if not query:
+            items = self.repo.list_all(
+                limit=limit,
+                category=category,
+            )
+        else:
+            items = self.repo.find(
+                query=query,
+                limit=limit,
+                category=category,
+            )
+
         if track_access:
+            seen: set[int] = set()
+
             for item in items:
-                if item.id:
+                if item.id is not None and item.id not in seen:
                     self.repo.increment_access(item.id)
+                    seen.add(item.id)
+
         return items
 
-    def list_items(self, limit: int = 20, category: str | None = None) -> list[KnowledgeItem]:
-        return self.repo.list_all(limit=limit, category=category)
+    def list_items(
+        self,
+        limit: int = 20,
+        category: str | None = None,
+    ) -> list[KnowledgeItem]:
+        return self.repo.list_all(
+            limit=limit,
+            category=category,
+        )
 
-    def get_item(self, item_id: int, track_access: bool = False) -> KnowledgeItem | None:
+    def get_item(
+        self,
+        item_id: int,
+        track_access: bool = False,
+    ) -> KnowledgeItem | None:
         item = self.repo.get_by_id(item_id)
+
         if item and track_access:
             self.repo.increment_access(item_id)
+
         return item
 
     def edit_item(
@@ -71,40 +116,50 @@ class KnowledgeService:
         category: str | None = None,
         title: str | None = None,
         content: str | None = None,
-        tags: list[str] | str | None = None
+        tags: list[str] | str | None = None,
     ) -> KnowledgeItem:
         item = self.repo.get_by_id(item_id)
-        if not item:
+
+        if item is None:
             raise ValueError(f"Knowledge item with ID {item_id} not found.")
 
         if category is not None:
-            category_clean = category.strip().lower()
-            if category_clean:
-                item.category = category_clean
+            category = category.strip().lower()
+            if category:
+                item.category = category
+
         if title is not None:
             item.title = title.strip()
+
         if content is not None:
-            content_clean = content.strip()
-            if content_clean:
-                item.content = content_clean
+            content = content.strip()
+            if content:
+                item.content = content
+
         if tags is not None:
-            if isinstance(tags, str):
-                item.tags = [t.strip() for t in tags.split(",") if t.strip()]
-            elif isinstance(tags, list):
-                item.tags = [t.strip() for t in tags if t.strip()]
+            item.tags = self._normalize_tags(tags)
 
         return self.repo.update(item)
 
     def delete_item(self, item_id: int) -> bool:
         return self.repo.delete(item_id)
 
-    def toggle_favorite(self, item_id: int) -> bool | None:
+    def toggle_favorite(
+        self,
+        item_id: int,
+    ) -> bool | None:
         return self.repo.toggle_favorite(item_id)
 
-    def get_recent(self, limit: int = 10) -> list[KnowledgeItem]:
+    def get_recent(
+        self,
+        limit: int = 10,
+    ) -> list[KnowledgeItem]:
         return self.repo.get_recent(limit=limit)
 
-    def get_favorites(self, limit: int = 20) -> list[KnowledgeItem]:
+    def get_favorites(
+        self,
+        limit: int = 20,
+    ) -> list[KnowledgeItem]:
         return self.repo.get_favorites(limit=limit)
 
     def get_stats(self) -> dict:

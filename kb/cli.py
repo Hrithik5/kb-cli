@@ -22,6 +22,7 @@ from kb.config import Config
 from kb.database import Database
 from kb.repositories.knowledge_repository import KnowledgeRepository
 from kb.services.knowledge_service import KnowledgeService
+from kb.shell import InteractiveShell
 
 COMMAND_CLASSES: list[type[BaseCommand]] = [
     InitCommand,
@@ -47,15 +48,29 @@ def build_parser() -> argparse.ArgumentParser:
         prog="kb",
         description="kb — Developer Knowledge Engine CLI powered by SQLite FTS5.",
     )
-    parser.add_argument(
-        "-v", "--version", action="version", version=f"kb version {__version__}"
-    )
-    parser.add_argument("--config-file", help="Custom path to config file")
 
-    subparsers = parser.add_subparsers(dest="command", help="Available kb subcommands")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"kb version {__version__}",
+    )
+
+    parser.add_argument(
+        "--config-file",
+        help="Custom path to config file",
+    )
+
+    subparsers = parser.add_subparsers(
+        dest="command",
+        help="Available kb subcommands",
+    )
 
     for cmd_cls in COMMAND_CLASSES:
-        sub_parser = subparsers.add_parser(cmd_cls.name, help=cmd_cls.help_text)
+        sub_parser = subparsers.add_parser(
+            cmd_cls.name,
+            help=cmd_cls.help_text,
+        )
         cmd_cls.configure_parser(sub_parser)
 
     return parser
@@ -69,10 +84,6 @@ def run_cli(args_list: list[str] | None = None) -> int:
     except SystemExit as exc:
         return exc.code
 
-    if not args.command:
-        parser.print_help()
-        return 0
-
     cfg = Config.load(
         config_path=args.config_file
         if hasattr(args, "config_file") and args.config_file
@@ -81,7 +92,6 @@ def run_cli(args_list: list[str] | None = None) -> int:
 
     db = Database(cfg.database_path)
 
-    # Ensure schema is initialized automatically.
     try:
         db.init_schema()
     except sqlite3.Error:
@@ -91,6 +101,11 @@ def run_cli(args_list: list[str] | None = None) -> int:
     repo = KnowledgeRepository(db)
     service = KnowledgeService(repo)
 
+    # Launch interactive shell if no subcommand was provided.
+    if not args.command:
+        shell = InteractiveShell(service, cfg)
+        return shell.run()
+
     for cmd_cls in COMMAND_CLASSES:
         if cmd_cls.name == args.command:
             cmd = cmd_cls(service, cfg)
@@ -98,3 +113,7 @@ def run_cli(args_list: list[str] | None = None) -> int:
 
     parser.print_help()
     return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(run_cli())

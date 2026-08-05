@@ -117,17 +117,17 @@ class KnowledgeRepository:
             return self._like_search(query, limit, category)
 
     def _format_fts_query(self, query: str) -> str:
-        """Sanitizes user input into valid FTS5 tokens."""
+        """Convert user input into a robust FTS5 prefix query."""
 
-        tokens = [t.strip("'\"*():") for t in query.split() if t.strip("'\"*():")]
+        tokens = [
+            token.strip("'\"*():") for token in query.split() if token.strip("'\"*():")
+        ]
 
         if not tokens:
             return ""
 
-        if len(tokens) > 1:
-            return " ".join(tokens[:-1] + [f"{tokens[-1]}*"])
-
-        return f"{tokens[0]}*"
+        # Require every token while allowing prefix matching.
+        return " AND ".join(f"{token}*" for token in tokens)
 
     def _like_search(
         self,
@@ -135,29 +135,46 @@ class KnowledgeRepository:
         limit: int = 10,
         category: str | None = None,
     ) -> list[KnowledgeItem]:
-        pattern = f"%{query}%"
+        """Fallback LIKE search when the FTS query cannot be executed."""
+
+        tokens = [token.strip() for token in query.split() if token.strip()]
+
+        if not tokens:
+            return self.list_all(limit=limit, category=category)
+
+        clauses: list[str] = []
+        params: list[str | int] = []
+
+        for token in tokens:
+            pattern = f"%{token}%"
+
+            clauses.append("(title LIKE ? OR content LIKE ? OR tags LIKE ?)")
+
+            params.extend([pattern, pattern, pattern])
+
+        sql = f"""
+                SELECT *
+                FROM knowledge
+                WHERE {" AND ".join(clauses)}
+            """
 
         if category:
-            sql = """
-                SELECT * FROM knowledge
-                WHERE (title LIKE ? OR content LIKE ? OR tags LIKE ?)
-                  AND category = ?
-                ORDER BY updated_at DESC
+            sql += " AND category = ?"
+            params.append(category)
+
+        sql += """
+                ORDER BY
+                    favorite DESC,
+                    access_count DESC,
+                    updated_at DESC
                 LIMIT ?;
             """
-            params = (pattern, pattern, pattern, category, limit)
-        else:
-            sql = """
-                SELECT * FROM knowledge
-                WHERE title LIKE ? OR content LIKE ? OR tags LIKE ?
-                ORDER BY updated_at DESC
-                LIMIT ?;
-            """
-            params = (pattern, pattern, pattern, limit)
+
+        params.append(limit)
 
         with self.db.get_connection() as conn:
-            rows = conn.execute(sql, params).fetchall()
-            return [self._row_to_item(r) for r in rows]
+            rows = conn.execute(sql, tuple(params)).fetchall()
+            return [self._row_to_item(row) for row in rows]
 
     def list_all(
         self,

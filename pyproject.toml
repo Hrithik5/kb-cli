@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kb-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "Lightning-fast offline developer knowledge engine powered by SQLite FTS5."
 readme = "README.md"
 authors = [{ name = "Hrithik Chauhan" }]
